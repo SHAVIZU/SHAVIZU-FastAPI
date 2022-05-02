@@ -7,7 +7,7 @@ from src.utils.product import crawl_image_by_style_code
 router = APIRouter()
 
 
-@router.get("/image", status_code=status.HTTP_200_OK)
+@router.post("/image", status_code=status.HTTP_201_CREATED)
 async def crawl_product_image(style_code: str, settings: Settings = Depends(get_settings)):
     img_url = await crawl_image_by_style_code(style_code=style_code, settings=settings)
 
