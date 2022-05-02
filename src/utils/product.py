@@ -11,7 +11,7 @@ from io import BytesIO
 from src import Settings
 
 
-async def crawl_image_by_style_code(style_code: str, settings: Settings):
+def crawl_image_by_style_code(style_code: str, settings: Settings):
         chrome_driver = settings.CHROME_DRIVER_PATH
         options = webdriver.ChromeOptions()
         options.add_argument("headless")
