@@ -4,6 +4,7 @@ from functools import lru_cache
 
 
 class Settings(BaseSettings):
+    MYSQL_DB_URL: str
     CHROME_DRIVER_PATH: str
     AWS_ACCESS_KEY: str
     AWS_SECRET_KEY: str
