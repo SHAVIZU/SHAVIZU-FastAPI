@@ -91,6 +91,8 @@ def get_shop_search_result(
         Tbl_shop_information.opening_hours,
         Tbl_shop_information.address,
         Tbl_shop_information.detailed_address,
+        Tbl_shop_information.latitude,
+        Tbl_shop_information.longitude
     )\
         .join(Tbl_shop_image, and_(Tbl_shop.id == Tbl_shop_information.shop_id, Tbl_shop_image.sequence == 1))\
         .join(Tbl_shop_information, Tbl_shop.id == Tbl_shop_information.shop_id)\
@@ -103,5 +105,7 @@ def get_shop_search_result(
         "name": name,
         "image_url": image_url,
         "opening_hours": opening_hours,
-        "address": f"{address} {detailed_address}"
-    } for id, name, image_url, opening_hours, address, detailed_address in shops]
+        "address": f"{address} {detailed_address}",
+        "latitude": latitude,
+        "longitude": longitude
+    } for id, name, image_url, opening_hours, address, detailed_address, latitude, longitude in shops]
