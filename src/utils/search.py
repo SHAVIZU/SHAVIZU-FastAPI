@@ -71,8 +71,9 @@ def get_item_search_detail(session: Session, item_id: int):
         "image_url": image_url,
         "opening_hours": opening_hours,
         "address": f"{address} {detailed_address}",
-        "stock": [{
-            size: amount
+        "inventory": [{
+            "size": size,
+            "amount": amount
         } for size, amount in map(lambda x: x.split(";"), stock.split("|")) ]
     } for id, name, image_url, opening_hours, address, detailed_address, price, stock in shops]
 
