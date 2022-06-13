@@ -23,7 +23,7 @@ def shop_information(shop_id: int, settings: Settings = Depends(get_settings)):
 @router.get("/items", status_code=status.HTTP_200_OK)
 def shop_items(
         shop_id: int,
-        brand: Optional[List[int]] = Query(None),
+        brand: Optional[List[str]] = Query(None),
         category: Optional[List[str]] = Query(None),
         size: Optional[List[str]] = Query(None),
         settings: Settings = Depends(get_settings)
