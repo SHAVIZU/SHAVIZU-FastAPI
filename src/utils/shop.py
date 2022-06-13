@@ -13,7 +13,14 @@ from src.core.models.item_size import Tbl_item_size
 from src.core.models.inventory import Tbl_inventory
 
 
+def is_shop(session: Session, shop_id: int):
+    return session.query(Tbl_shop).filter(Tbl_shop.id == shop_id).scalar()
+
+
 def get_shop_information(session: Session, shop_id: int):
+    if is_shop(session=session, shop_id=shop_id):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="no such shop")
+
     shop_info = session.query(
         Tbl_shop.name,
         Tbl_shop_information.address,
@@ -43,6 +50,9 @@ def get_shop_name(session: Session, shop_id):
 
 
 def get_shop_items(session: Session, shop_id: int, brand: list, category: list, size: list):
+    if is_shop(session=session, shop_id=shop_id):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="no such shop")
+
     query = session.query(
         Tbl_sell.discount_price,
         Tbl_sell.discount_rate,
@@ -67,8 +77,7 @@ def get_shop_items(session: Session, shop_id: int, brand: list, category: list, 
     if not size:
         query = query.filter(Tbl_item_size.size.in_(size))
 
-    items = query.order_by(and_(Tbl_sell.created_at.desc(), Tbl_inventory.amount.desc()))\
-        .limit(limit).offset(offset).all()
+    items = query.order_by(and_(Tbl_sell.created_at.desc(), Tbl_inventory.amount.desc())).all()
 
     return {
         "shop_name": get_shop_name(session=session, shop_id=shop_id),
@@ -87,6 +96,9 @@ def get_shop_items(session: Session, shop_id: int, brand: list, category: list, 
 
 
 def get_shop_brands(session: Session, shop_id: int):
+    if is_shop(session=session, shop_id=shop_id):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="no such shop")
+
     brands = session.query(Tbl_brand.name)\
         .distinct(Tbl_brand.name)\
         .join(Tbl_item, Tbl_brand.id == Tbl_item.brand_id)\
@@ -99,6 +111,9 @@ def get_shop_brands(session: Session, shop_id: int):
 
 
 def get_shop_item_sizes(session: Session, shop_id: int, categories: list):
+    if is_shop(session=session, shop_id=shop_id):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="no such shop")
+    
     sizes = session.query(
         Tbl_item_size.size
     )\
