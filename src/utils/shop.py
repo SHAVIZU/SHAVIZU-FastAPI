@@ -67,17 +67,14 @@ def get_shop_items(session: Session, shop_id: int, brand: list, category: list, 
         .join(Tbl_inventory, and_(Tbl_sell.id == Tbl_inventory.sell_id, Tbl_item_size.id == Tbl_inventory.item_size_id))\
         .filter(Tbl_sell.shop_id == shop_id)
 
-    if not query.scalar():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="no such shop")
-
-    if not brand:
+    if brand:
         query = query.filter(Tbl_brand.name.in_(brand))
-    if not category:
+    if category:
         query = query.filter(Tbl_item.category.in_(category))
-    if not size:
+    if size:
         query = query.filter(Tbl_item_size.size.in_(size))
 
-    items = query.order_by(and_(Tbl_sell.created_at.desc(), Tbl_inventory.amount.desc())).all()
+    items = query.order_by(Tbl_sell.created_at.desc(), Tbl_inventory.amount.desc())
 
     return {
         "shop_name": get_shop_name(session=session, shop_id=shop_id),
@@ -91,7 +88,7 @@ def get_shop_items(session: Session, shop_id: int, brand: list, category: list, 
                 "size": size_,
                 "amount": amount
             } for size_, amount in map(lambda x: x.split(";"), stock.split("|")) ]
-        } for discount_price, discount_rate, item_name, image_url, brand_name, stock in items]
+        } for discount_price, discount_rate, item_name, image_url, brand_name, stock in items.all() if items.scalar()]
     }
 
 
