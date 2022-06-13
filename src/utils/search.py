@@ -57,6 +57,7 @@ def get_item_search_detail(session: Session, item_id: int):
         Tbl_sell.discount_price,
         func.group_concat(func.concat(Tbl_item_size.size, ";", Tbl_inventory.amount), "|").label("stock")
     )\
+        .select_from(Tbl_shop)\
         .join(Tbl_shop_image, and_(Tbl_shop.id == Tbl_shop_information.shop_id, Tbl_shop_image.sequence == 1))\
         .join(Tbl_shop_information, Tbl_shop.id == Tbl_shop_information.shop_id)\
         .join(Tbl_sell, Tbl_shop.id == Tbl_sell.shop_id)\
@@ -95,6 +96,7 @@ def get_shop_search_result(
         Tbl_shop_information.latitude,
         Tbl_shop_information.longitude
     )\
+        .select_from(Tbl_shop)\
         .join(Tbl_shop_image, and_(Tbl_shop.id == Tbl_shop_information.shop_id, Tbl_shop_image.sequence == 1))\
         .join(Tbl_shop_information, Tbl_shop.id == Tbl_shop_information.shop_id)\
         .filter(Tbl_shop_information.latitude.between(min_latitude, max_latitude))\
