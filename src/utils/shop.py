@@ -113,7 +113,7 @@ def get_shop_brands(session: Session, shop_id: int):
 def get_shop_item_sizes(session: Session, shop_id: int, categories: list):
     if is_shop(session=session, shop_id=shop_id):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="no such shop")
-    
+
     sizes = session.query(
         Tbl_item_size.size
     )\
