@@ -64,7 +64,7 @@ def get_item_search_detail(session: Session, item_id: int):
         .join(Tbl_inventory, Tbl_sell.id == Tbl_inventory.sell_id)\
         .join(Tbl_item_size, Tbl_inventory.item_size_id == Tbl_item_size.id)\
         .filter(Tbl_sell.item_id == item_id)\
-        .order_by(func.sum(Tbl_inventory.amount).desc()).all()
+        .order_by(func.sum(Tbl_inventory.amount).desc())
 
     return [{
         "id": id,
@@ -76,7 +76,7 @@ def get_item_search_detail(session: Session, item_id: int):
             "size": size,
             "amount": amount
         } for size, amount in map(lambda x: x.split(";"), stock.split("|")) ]
-    } for id, name, image_url, opening_hours, address, detailed_address, price, stock in shops]
+    } for id, name, image_url, opening_hours, address, detailed_address, price, stock in shops.all() if shops.scalar()]
 
 
 def get_shop_search_result(
