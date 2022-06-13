@@ -58,13 +58,13 @@ def get_item_search_detail(session: Session, item_id: int):
         func.group_concat(func.concat(Tbl_item_size.size, ";", Tbl_inventory.amount), "|").label("stock")
     )\
         .select_from(Tbl_shop)\
-        .join(Tbl_shop_image, and_(Tbl_shop.id == Tbl_shop_information.shop_id, Tbl_shop_image.sequence == 1))\
         .join(Tbl_shop_information, Tbl_shop.id == Tbl_shop_information.shop_id)\
+        .join(Tbl_shop_image, and_(Tbl_shop.id == Tbl_shop_information.shop_id, Tbl_shop_image.sequence == 1))\
         .join(Tbl_sell, Tbl_shop.id == Tbl_sell.shop_id)\
         .join(Tbl_inventory, Tbl_sell.id == Tbl_inventory.sell_id)\
         .join(Tbl_item_size, Tbl_inventory.item_size_id == Tbl_item_size.id)\
         .filter(Tbl_sell.item_id == item_id)\
-        .order_by(func.sum(Tbl_inventory.amount.desc())).all()
+        .order_by(func.sum(Tbl_inventory.amount).desc()).all()
 
     return [{
         "id": id,
