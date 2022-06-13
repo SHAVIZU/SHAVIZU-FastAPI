@@ -42,10 +42,7 @@ def get_shop_name(session: Session, shop_id):
     return session.query(Tbl_shop.name).filter(Tbl_shop.id == shop_id).first()["name"]
 
 
-def get_shop_items(session: Session, shop_id: int, brand: list, category: list, size: list, page: int):
-    limit = 30
-    offset = (page - 1) * limit
-
+def get_shop_items(session: Session, shop_id: int, brand: list, category: list, size: list):
     query = session.query(
         Tbl_sell.discount_price,
         Tbl_sell.discount_rate,
