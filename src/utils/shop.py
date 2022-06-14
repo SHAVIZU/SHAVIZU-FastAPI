@@ -117,8 +117,10 @@ def get_shop_item_sizes(session: Session, shop_id: int, categories: list):
         .distinct(Tbl_item_size.size)\
         .join(Tbl_item, Tbl_item_size.item_id == Tbl_item.id)\
         .join(Tbl_sell, Tbl_item.id == Tbl_sell.item_id)\
-        .filter(and_(Tbl_sell.shop_id == shop_id, Tbl_item.category.in_(categories if categories else [])))\
-        .all()
+        .filter(Tbl_sell.shop_id == shop_id)\
+
+    if categories:
+        sizes = sizes.filter(Tbl_item.category.in_(categories))
 
     return {
         "sizes": [size["size"] for size in sizes]
