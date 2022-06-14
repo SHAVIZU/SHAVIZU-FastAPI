@@ -87,7 +87,7 @@ def get_shop_items(session: Session, shop_id: int, brand: list, category: list, 
             "inventory": [{
                 "size": size_,
                 "amount": amount
-            } for size_, amount in map(lambda x: x.split(";"), stock.split("|")) ]
+            } for size_, amount in list(map(lambda x: x.split(";"), stock.split("|")))[:-1] ]
         } for discount_price, discount_rate, item_name, image_url, brand_name, stock in items.all() if items.scalar()]
     }
 
