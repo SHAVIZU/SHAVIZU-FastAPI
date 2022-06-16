@@ -75,7 +75,7 @@ def get_item_search_detail(session: Session, item_id: int):
         "inventory": [{
             "size": size,
             "amount": amount
-        } for size, amount in map(lambda x: x.split(";"), stock.split("|")) ]
+        } for size, amount in list(map(lambda x: x.split(";"), stock.split("|")))[:-1] ]
     } for id, name, image_url, opening_hours, address, detailed_address, price, stock in shops.all() if shops.scalar()]
 
 
