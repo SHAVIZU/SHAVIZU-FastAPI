@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status, Query, Depends
 
-from typing import Optional, List
+from typing import Optional
 
 from src import Settings, get_settings
 from src.core.models import session_scope
@@ -25,7 +25,7 @@ def search_item(
             style_code=style_code,
             name=name,
             brand=brand,
-            category=category.split(",")
+            category=category.split(",") if category else category
         )
 
         return response

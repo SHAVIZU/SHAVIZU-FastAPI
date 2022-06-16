@@ -33,9 +33,9 @@ def shop_items(
         response = get_shop_items(
             session=session,
             shop_id=shop_id,
-            brand=brand.split(","),
-            category=category.split(","),
-            size=size.split(",")
+            brand=brand.split(",") if brand else brand,
+            category=category.split(",") if category else category,
+            size=size.split(",") if size else size
         )
 
         return response
@@ -56,6 +56,6 @@ def get_sizes(
         settings: Settings = Depends(get_settings)
 ):
     with session_scope(settings.MYSQL_DB_URL) as session:
-        response = get_shop_item_sizes(session=session, shop_id=shop_id, categories=category.split(","))
+        response = get_shop_item_sizes(session=session, shop_id=shop_id, categories=category.split(",") if category else category)
 
         return response
