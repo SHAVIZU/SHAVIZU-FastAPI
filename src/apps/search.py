@@ -16,7 +16,7 @@ def search_item(
         style_code: Optional[str] = Query(None),
         name: Optional[str] = Query(None),
         brand: Optional[str] = Query(None),
-        category: Optional[List[str]] = Query(None),
+        category: Optional[str] = Query(None),
         settings: Settings = Depends(get_settings)
 ):
     with session_scope(settings.MYSQL_DB_URL) as session:
@@ -25,7 +25,7 @@ def search_item(
             style_code=style_code,
             name=name,
             brand=brand,
-            category=category
+            category=category.split(",")
         )
 
         return response
