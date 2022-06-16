@@ -23,16 +23,16 @@ def get_item_search_result(session: Session, style_code: str, name: str, brand: 
         Tbl_item.style_code
     ).join(Tbl_brand, Tbl_item.brand_id == Tbl_brand.id)
 
-    if not style_code:
+    if style_code:
         query = query.filter(Tbl_item.style_code == style_code)
-    elif not name:
+    elif name:
         query = query.filter(Tbl_item.name == name)
-    elif not brand:
+    elif brand:
         query = query.filter(Tbl_brand.name == brand)
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No keyword in query")
 
-    if not category:
+    if category:
         query = query.filter(Tbl_item.category.in_(category))
 
     items = query.all()
