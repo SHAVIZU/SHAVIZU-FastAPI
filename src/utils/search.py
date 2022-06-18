@@ -97,8 +97,8 @@ def get_shop_search_result(
         Tbl_shop_information.longitude
     )\
         .select_from(Tbl_shop)\
-        .join(Tbl_shop_image, and_(Tbl_shop.id == Tbl_shop_information.shop_id, Tbl_shop_image.sequence == 1))\
         .join(Tbl_shop_information, Tbl_shop.id == Tbl_shop_information.shop_id)\
+        .join(Tbl_shop_image, and_(Tbl_shop.id == Tbl_shop_information.shop_id, Tbl_shop_image.sequence == 1))\
         .filter(Tbl_shop_information.latitude.between(min_latitude, max_latitude))\
         .filter(Tbl_shop_information.longitude.between(min_longitude, max_longitude))\
         .all()
