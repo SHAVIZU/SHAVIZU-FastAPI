@@ -28,7 +28,7 @@ def get_shop_information(session: Session, shop_id: int):
         Tbl_shop_information.telephone,
         Tbl_shop_information.opening_hours,
         Tbl_shop_information.description,
-        literal_column("group_concat(tbl_shop_image.image_url ORDER BY tbl_shop_image.sequence SEPARATOR ' ') AS image_urls")
+        literal_column("group_concat(tbl_shop_image.image_url ORDER BY tbl_shop_image.sequence SEPARATOR ' ')").label("image_urls")
     )\
         .join(Tbl_shop_information, Tbl_shop.id == Tbl_shop_information.shop_id)\
         .join(Tbl_shop_image, Tbl_shop.id == Tbl_shop_image.shop_id)\
