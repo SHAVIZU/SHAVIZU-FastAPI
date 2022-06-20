@@ -13,8 +13,10 @@ from src import Settings
 
 def crawl_image_by_style_code(style_code: str, settings: Settings):
         chrome_driver = settings.CHROME_DRIVER_PATH
+        chrome_binary = settings.CHROME_BINARY_PATH
         options = webdriver.ChromeOptions()
         options.add_argument("headless")
+        options.binary_location = chrome_binary
 
         driver = webdriver.Chrome(chrome_driver, options=options)
         driver.get(f"https://www.google.com/search?q={style_code}&tbm=isch")
