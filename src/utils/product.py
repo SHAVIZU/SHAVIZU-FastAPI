@@ -16,22 +16,18 @@ def crawl_image_by_style_code(style_code: str, settings: Settings):
         chrome_binary = settings.CHROME_BINARY_PATH
         options = webdriver.ChromeOptions()
         options.add_argument("--headless")
+        options.add_argument('--disable-gpu')
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
         options.binary_location = chrome_binary
 
         driver = webdriver.Chrome(chrome_driver, options=options)
         driver.get(f"https://www.google.com/search?q={style_code}&tbm=isch")
-        data_id = driver.find_element_by_xpath(
-            "/html/body/div[2]/c-wiz/div[3]/div[1]/div/div/div/div[1]/div[1]/span/div[1]/div[1]/div[1]"
-        ).get_attribute('data-id')
-        driver.get(f"https://www.google.com/search?q={style_code}&tbm=isch#imgrc={data_id}")
+        driver.find_element_by_class_name("islrc").find_element_by_tag_name("div").click()
 
         time.sleep(1)
 
-        img_url = driver.find_element_by_xpath(
-            "/html/body/div[2]/c-wiz/div[3]/div[2]/div[3]/div/div/div[3]/div[2]/c-wiz/div/div[1]/div[1]/div[2]/div/a/img"
-        ).get_attribute("src")
+        img_url = driver.find_element_by_class_name("n3VNCb").get_attribute("src")
         context = ssl._create_unverified_context()
         res = urlopen(img_url, context=context).read()
         img = BytesIO(res)
